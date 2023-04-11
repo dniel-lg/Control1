@@ -71,4 +71,13 @@ colnames(tablaDobleEntradaRelativa) <- c("Muy Bajo", "Bajo", "Medio", "Alto", "M
 rownames(tablaDobleEntradaRelativa) <- c("Muy poco uso", "Poco uso", "Mediano uso", "Bastante uso", "Frecuente uso", "Total")
 tablaDobleEntradaRelativa <- round(tablaDobleEntradaRelativa * 100, 2)
 
-# Tabla de frecuencia relativa de doble entrada respecto de la frecuencia de cada nivel de
+# Tabla de frecuencia relativa de doble entrada respecto de la frecuencia de cada nivel de uso (Columnas)
+
+tablaDobleEntradaRelUso <- prop.table(tablaDobleEntrada, margin = 1) *2
+colnames(tablaDobleEntradaRelUso) <- c("Muy poco uso", "Poco uso", "Mediano uso", "Bastante uso", "Frecuente uso", "Total")
+rownames(tablaDobleEntradaRelUso) <- c("Muy bajo", "Bajo", "Medio", "Alto", "Muy alto", "Total")
+
+# Tabla de frecuencia relativa de doble entrada respecto de la frecuencia de cada nivel de ingresos (Filas)
+tablaDobleEntradaRelIngreso <- prop.table(tablaDobleEntrada, margin = 2) *2
+colnames(tablaDobleEntradaRelIngreso) <- c("Muy poco uso", "Poco uso", "Mediano uso", "Bastante uso", "Frecuente uso", "Total")
+rownames(tablaDobleEntradaRelIngreso) <- c("Muy bajo", "Bajo", "Medio", "Alto", "Muy alto", "Total")
