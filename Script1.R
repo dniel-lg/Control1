@@ -1,5 +1,5 @@
 ## Importar CSV
-database <- read.csv("/home/dani/Workspace/Control 1/BankChurners.csv")
+database <- read.csv("/home/dani/Workspace/Control1/BankChurners.csv")
 
 class(database)
 class(database$Total_Trans_Ct)
@@ -9,6 +9,8 @@ class(database$Credit_Limit)
 columnas <- c("Total_Trans_Ct", "Credit_Limit")
 datos <- database[, columnas]
 as.matrix(datos)
+
+########## 1) a. Categorizar ##########
 
 ## Categorizar Total de Transferencias
 datos[which(datos$Total_Trans_Ct >= 10 & datos$Total_Trans_Ct <= 29), "NivelUsoTarjeta"] <- "Muy poco uso"
@@ -24,25 +26,49 @@ datos[which(datos$Credit_Limit >= 5000 & datos$Credit_Limit <= 9999), "NivelIngr
 datos[which(datos$Credit_Limit >= 10000 & datos$Credit_Limit <= 19999), "NivelIngresos"] <- "Alto"
 datos[which(datos$Credit_Limit >= 20000 & datos$Credit_Limit <= 40000), "NivelIngresos"] <- "Muy alto"
 
-## Crear tablas de Frecuencia Absoluta (TFA = Tabla de Frecuencia Absoluta)
-TFAUso <- table(datos$NivelUsoTarjeta)
-TFACredito <- table(datos$NivelIngresos)
-print(TFAUso)
-print(TFACredito)
 
-## Crear tablas de Frecuencia Relativa (TFR = Tabla de Frecuencia Relativa)
-TFRUso <- prop.table(TFAUso)
-TFRCredito <- prop.table(TFACredito)
-print(TFRUso)
-print(TFRCredito)
+########## 1) b. Tablas de Frecuencia Absoluta ##########
 
-## Crear tabla de frecuencia absoluta de doble entrada
+# Tabla de frecuencia absoluta de NivelUsoTarjeta
+table(datos$NivelUsoTarjeta)
+FAUsoTarjeta <- as.matrix(table(datos$NivelUsoTarjeta))
+colnames(FAUsoTarjeta) <- ("Frecuencia")
 
+# Tabla de frecuencia absoluta de NivelIngresos
+table(datos$NivelIngresos)
+FAIngresos <- as.matrix(table(datos$NivelIngresos))
+colnames(FAIngresos) <- ("Frecuencia")
+
+
+########## 1) c. Tablas de Frecuencia Relativa ##########
+
+# Tabla de frecuencia relativa de NivelUsoTarjeta
+FRUsoTarjeta <- prop.table(table(datos$NivelUsoTarjeta))
+#Convertir en Matriz
+FRUsoTarjeta <- as.matrix(FRUsoTarjeta)
+colnames(FRUsoTarjeta) <- ("Frecuencia Relativa")
+
+# Tabla de frecuencia relativa de NivelIngresos
+FRIngresos <- prop.table(table(datos$NivelIngresos))
+#Convertir en Matriz
+FRIngresos <- as.matrix(FRIngresos)
+colnames(FRIngresos) <- ("Frecuencia Relativa")
+
+
+########## 1) d. Tabla de Frecuencia Relatica de Doble Entrada ##########
+
+# Tabla de frecuencia absoluta de doble entrada
 tablaDobleEntrada <- ftable(datos$NivelIngresos, datos$NivelUsoTarjeta)
 tablaDobleEntrada <- addmargins(tablaDobleEntrada)
 colnames(tablaDobleEntrada) <- c("Muy Bajo", "Bajo", "Medio", "Alto", "Muy Alto", "Total")
 rownames(tablaDobleEntrada) <- c("Muy poco uso", "Poco uso", "Mediano uso", "Bastante uso", "Frecuente uso", "Total")
 
-## Tabla de frecuencia relativa de doble entrada
-tablaFrecRelativa <- prop.table(tablaDobleEntrada, margin = 2)
-print(tablaFrecRelativa)
+# Tabla de frecuencia relativa de doble entrada respecto del total general
+
+tablaDobleEntradaRelativa <- prop.table(ftable(datos$NivelIngresos, datos$NivelUsoTarjeta))
+tablaDobleEntradaRelativa <- addmargins(tablaDobleEntradaRelativa)
+colnames(tablaDobleEntradaRelativa) <- c("Muy Bajo", "Bajo", "Medio", "Alto", "Muy Alto", "Total")
+rownames(tablaDobleEntradaRelativa) <- c("Muy poco uso", "Poco uso", "Mediano uso", "Bastante uso", "Frecuente uso", "Total")
+tablaDobleEntradaRelativa <- round(tablaDobleEntradaRelativa * 100, 2)
+
+# Tabla de frecuencia relativa de doble entrada respecto de la frecuencia de cada nivel de
