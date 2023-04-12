@@ -3,7 +3,7 @@ cat("\014")
 
 
 getwd()
-setwd("C:/Users/benja/Desktop/Ayudantia Computacion")
+#setwd("C:/Users/benja/Desktop/Ayudantia Computacion")
 getwd()
 dir()
 
